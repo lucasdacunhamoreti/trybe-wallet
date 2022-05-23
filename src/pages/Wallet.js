@@ -3,17 +3,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchApi, setExpense } from '../actions';
 
+const INITIAL_STATE = {
+  value: '',
+  description: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
+};
+
 class Wallet extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      value: '',
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-    };
+    this.state = INITIAL_STATE;
   }
 
   componentDidMount() {
@@ -31,12 +33,7 @@ class Wallet extends React.Component {
     const id = expenses.length;
     const idPlusExpense = { id, ...this.state };
     addExpense(idPlusExpense);
-    this.setState({
-      value: '',
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-    });
+    this.setState(INITIAL_STATE);
   }
 
   sumExpenses = () => {
@@ -61,7 +58,6 @@ class Wallet extends React.Component {
             { email }
           </h4>
           <h4 data-testid="total-field">
-            Total:
             { this.sumExpenses() }
           </h4>
           <h4 data-testid="header-currency-field">Câmbio utilizado: BRL</h4>
@@ -106,33 +102,35 @@ class Wallet extends React.Component {
             </select>
           </label>
 
-          <label data-testid="method-input" htmlFor="payment_method">
+          <label htmlFor="payment_method">
             Método de pagamento
             <select
+              data-testid="method-input"
               name="method"
               value={ method }
               id="payment_method"
               onChange={ this.handleChange }
             >
-              <option value="Dinheiro">Dinheiro</option>
-              <option value="Cartão de crédito">Cartão de crédito</option>
-              <option value="Cartão de débito">Cartão de débito</option>
+              <option>Dinheiro</option>
+              <option>Cartão de crédito</option>
+              <option>Cartão de débito</option>
             </select>
           </label>
 
-          <label data-testid="tag-input" htmlFor="category">
+          <label htmlFor="category">
             Categoria
             <select
+              data-testid="tag-input"
               name="tag"
               value={ tag }
               id="category"
               onChange={ this.handleChange }
             >
-              <option value="Alimentação">Alimentação</option>
-              <option value="Lazer">Lazer</option>
-              <option value="Trabalho">Trabalho</option>
-              <option value="Transporte">Transporte</option>
-              <option value="Saúde">Saúde</option>
+              <option>Alimentação</option>
+              <option>Lazer</option>
+              <option>Trabalho</option>
+              <option>Transporte</option>
+              <option>Saúde</option>
             </select>
           </label>
 
