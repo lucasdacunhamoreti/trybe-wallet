@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addEmail } from '../actions';
+import { actionLogin } from '../actions';
 
 class Login extends React.Component {
   constructor() {
     super();
+
     this.state = {
       email: '',
       password: '',
@@ -13,73 +14,76 @@ class Login extends React.Component {
   }
 
   handleChange = ({ target }) => {
-    this.setState({ [target.name]: target.value });
+    this.setState({
+      [target.name]: target.value,
+    });
   }
 
-  handleSubmit = (event) => {
-    const { dispatch, history } = this.props;
+  validateEmail = () => {
     const { email } = this.state;
-    event.preventDefault();
-    dispatch(addEmail(email));
-    history.push('/carteira');
+    const regex = /\S+@\S+\.\S+/;
+    return regex.test(email);
   }
 
-  handleValidateEmail = (email) => {
-    const emailRegrex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegrex.test(email);
-  }
-
-  handleValidatePassword = (password) => {
+  validatePassword = () => {
+    const { password } = this.state;
     const MIN_LENGTH_PASSWORD = 6;
-    return password.length >= MIN_LENGTH_PASSWORD;
+    return password.length < MIN_LENGTH_PASSWORD;
+  };
+
+  handleSubmit = () => {
+    const { history } = this.props;
+    history.push('/carteira');
   }
 
   render() {
     const { email, password } = this.state;
+    const { dispatch } = this.props;
+
     return (
-      <section>
-        <form>
-          <div>
-            <label htmlFor="email">
-              Email
-              <input
-                onChange={ this.handleChange }
-                name="email"
-                data-testid="email-input"
-                type="email"
-                value={ email }
-              />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              Senha
-              <input
-                onChange={ this.handleChange }
-                name="password"
-                data-testid="password-input"
-                value={ password }
-                type="password"
-              />
-            </label>
-          </div>
-          <button
-            type="submit"
-            onClick={ this.handleSubmit }
-            disabled={ !this.handleValidateEmail(email)
-              || !this.handleValidatePassword(password) }
-          >
-            Entrar
-          </button>
-        </form>
-      </section>
+      <div>
+        <div>
+          <label htmlFor="email">
+            <input
+              data-testid="email-input"
+              name="email"
+              value={ email }
+              type="text"
+              placeholder="Email"
+              onChange={ this.handleChange }
+            />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="password">
+            <input
+              data-testid="password-input"
+              value={ password }
+              name="password"
+              type="password"
+              placeholder="Senha"
+              onChange={ this.handleChange }
+            />
+          </label>
+        </div>
+        <button
+          disabled={ !this.validateEmail() || this.validatePassword() }
+          type="button"
+          onClick={ () => {
+            dispatch(actionLogin(email, password));
+            this.handleSubmit();
+          } }
+        >
+          Entrar
+        </button>
+      </div>
     );
   }
 }
 
-export default connect()(Login);
-
 Login.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
-};
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
+  dispatch: PropTypes.object.isRequired,
+}.isRequired;
+
+export default connect()(Login);
