@@ -3,9 +3,15 @@ export const LOGIN_ACTION = 'LOGIN_ACTION';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
 export const REQUEST_API = 'REQUEST_API';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 const addExpense = (expense) => ({
   type: ADD_EXPENSE,
+  payload: expense,
+});
+
+export const removeExpense = (expense) => ({
+  type: 'REMOVE_EXPENSE',
   payload: expense,
 });
 

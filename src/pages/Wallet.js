@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchApi, setExpense } from '../actions';
+import { fetchApi, setExpense, removeExpense } from '../actions';
 
 const INITIAL_STATE = {
   value: '',
@@ -48,8 +48,7 @@ class Wallet extends React.Component {
   };
 
   render() {
-    const { email, currencies, expenses } = this.props;
-    console.log(expenses);
+    const { email, currencies, expenses, deleteExpense } = this.props;
     const { value, description, currency, method, tag } = this.state;
     return (
       <div>
@@ -177,6 +176,15 @@ class Wallet extends React.Component {
                     .toFixed(2) }
                 </td>
                 <td>Real</td>
+                <td>
+                  <button
+                    type="button"
+                    data-testid="delete-btn"
+                    onClick={ () => deleteExpense(expense) }
+                  >
+                    Excluir
+                  </button>
+                </td>
               </tr>
             ))}
 
@@ -197,6 +205,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   fetchReturnApi: (data) => dispatch(fetchApi(data)),
   addExpense: (state) => dispatch(setExpense(state)),
+  deleteExpense: (state) => dispatch(removeExpense(state)),
 });
 
 Wallet.propTypes = {

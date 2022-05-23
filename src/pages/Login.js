@@ -51,6 +51,7 @@ class Login extends React.Component {
               type="text"
               placeholder="Email"
               onChange={ this.handleChange }
+              id="input-email"
             />
           </label>
         </div>
