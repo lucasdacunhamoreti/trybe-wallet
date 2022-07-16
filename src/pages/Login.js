@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actionLogin } from '../actions';
+import './Login.css';
+import logo from '../images/logo.svg';
 
 class Login extends React.Component {
   constructor() {
@@ -41,7 +43,8 @@ class Login extends React.Component {
     const { dispatch } = this.props;
 
     return (
-      <div>
+      <div id="container-login">
+        <img id="wallet-img" src={ logo } alt="carteira" />
         <div>
           <label htmlFor="email">
             <input
@@ -49,9 +52,12 @@ class Login extends React.Component {
               name="email"
               value={ email }
               type="text"
-              placeholder="Email"
               onChange={ this.handleChange }
               id="input-email"
+              className="form-control"
+              placeholder="Email"
+              aria-label="Email"
+              aria-describedby="basic-addon1"
             />
           </label>
         </div>
@@ -62,14 +68,18 @@ class Login extends React.Component {
               value={ password }
               name="password"
               type="password"
-              placeholder="Senha"
               onChange={ this.handleChange }
+              className="form-control"
+              placeholder="Senha"
+              aria-label="Senha"
+              aria-describedby="basic-addon1"
             />
           </label>
         </div>
         <button
           disabled={ !this.validateEmail() || this.validatePassword() }
           type="button"
+          className="btn btn-success"
           onClick={ () => {
             dispatch(actionLogin(email, password));
             this.handleSubmit();

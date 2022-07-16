@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchApi, setExpense, removeExpense } from '../actions';
+import './Wallet.css';
+import logo from '../images/logo.svg';
 
 const INITIAL_STATE = {
   value: '',
@@ -52,18 +54,24 @@ class Wallet extends React.Component {
     const { value, description, currency, method, tag } = this.state;
     return (
       <div>
-        <header>
-          <h4 data-testid="email-field">
-            Email:
-            { email }
-          </h4>
-          <h4 data-testid="total-field">
-            { this.sumExpenses() }
-          </h4>
-          <h4 data-testid="header-currency-field">Câmbio utilizado: BRL</h4>
+        <header id="container-header">
+          <div>
+            <img src={ logo } alt="logo" />
+          </div>
+          <div id="container-info-header">
+            <h5 data-testid="email-field">
+              Email:
+              { email }
+            </h5>
+            <h5 id="expense-total" data-testid="total-field">
+              Despesa Total: R$
+              { Number(this.sumExpenses()).toFixed(2) }
+            </h5>
+            <h5 data-testid="header-currency-field">BRL</h5>
+          </div>
         </header>
 
-        <div>
+        <div id="container-add-expense">
           <label htmlFor="value">
             <input
               id="value"
@@ -73,6 +81,9 @@ class Wallet extends React.Component {
               data-testid="value-input"
               type="number"
               placeholder="Valor da despesa"
+              className="form-control"
+              aria-label="Valor da despesa"
+              aria-describedby="basic-addon1"
             />
           </label>
 
@@ -85,6 +96,9 @@ class Wallet extends React.Component {
               name="description"
               value={ description }
               onChange={ this.handleChange }
+              className="form-control"
+              aria-label="Descrição da despesa"
+              aria-describedby="basic-addon1"
             />
           </label>
 
@@ -95,6 +109,7 @@ class Wallet extends React.Component {
               value={ currency }
               id="currencies"
               onChange={ this.handleChange }
+              className="form-select"
             >
               {currencies.map((coin) => (
                 <option key={ coin } value={ coin }>{coin}</option>
@@ -110,6 +125,7 @@ class Wallet extends React.Component {
               value={ method }
               id="payment_method"
               onChange={ this.handleChange }
+              className="form-select"
             >
               <option>Dinheiro</option>
               <option>Cartão de crédito</option>
@@ -125,6 +141,7 @@ class Wallet extends React.Component {
               value={ tag }
               id="category"
               onChange={ this.handleChange }
+              className="form-select"
             >
               <option>Alimentação</option>
               <option>Lazer</option>
@@ -138,40 +155,47 @@ class Wallet extends React.Component {
             disabled={ !value || !description || !currency || !method || !tag }
             type="submit"
             onClick={ this.submitExpense }
+            className="btn btn-info"
           >
             Adicionar despesa
 
           </button>
         </div>
 
-        <table>
-          <tbody>
-            <tr>
-              <th>Descrição</th>
-              <th>Tag</th>
-              <th>Método de pagamento</th>
-              <th>Valor</th>
-              <th>Moeda</th>
-              <th>Câmbio utilizado</th>
-              <th>Valor convertido</th>
-              <th>Moeda de conversão</th>
-              <th>Editar/Excluir</th>
+        <table className="table table-bordered">
+          <thead>
+            <tr id="descriptions-table">
+              <th scope="col">Descrição</th>
+              <th scope="col">Tag</th>
+              <th scope="col">Método de pagamento</th>
+              <th scope="col">Valor</th>
+              <th scope="col">Moeda</th>
+              <th scope="col">Câmbio utilizado</th>
+              <th scope="col">Valor convertido</th>
+              <th scope="col">Moeda de conversão</th>
+              <th scope="col">Editar/Excluir</th>
             </tr>
-
+          </thead>
+          <tbody>
             { expenses.map((expense) => (
               <tr key={ expense.id }>
                 <td>{ expense.description }</td>
                 <td>{ expense.tag }</td>
                 <td>{ expense.method }</td>
-                <td>{ Number(expense.value).toFixed(2) }</td>
+                <td>
+                  R$
+                  { Number(expense.value).toFixed(2) }
+                </td>
                 <td>
                   { expense.exchangeRates[expense.currency].name }
                 </td>
                 <td>
+                  R$
                   { Number(expense.exchangeRates[expense.currency].ask)
                     .toFixed(2) }
                 </td>
                 <td>
+                  R$
                   { Number(expense.value * expense.exchangeRates[expense.currency].ask)
                     .toFixed(2) }
                 </td>
@@ -181,13 +205,13 @@ class Wallet extends React.Component {
                     type="button"
                     data-testid="delete-btn"
                     onClick={ () => deleteExpense(expense) }
+                    className="btn btn-danger"
                   >
                     Excluir
                   </button>
                 </td>
               </tr>
             ))}
-
           </tbody>
         </table>
 

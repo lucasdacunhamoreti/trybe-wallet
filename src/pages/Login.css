@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #1B1F38;
+  color: white;
+}
+
+#container-login {
+  margin-top: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#wallet-img {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+#container-login input {
+  padding: 15px;
+  margin-bottom: 25px;
+}
