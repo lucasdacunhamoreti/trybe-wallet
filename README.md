@@ -5,12 +5,6 @@ Projeto da [Trybe](https://www.betrybe.com/) - Bloco 15 - Aplicação de carteir
 
 Carteira digital de controle de gastos com conversor de moedas feita em React e utilizando Redux como ferramenta de manipulação de estado.
 
-<details>
-  <summary><strong>🏆 Meu desempenho</strong></summary><br />
-
-  <img src="project-info/trybewallet.png"/>
-</details>
-
 ## 🚀 Tecnologias
 > Este projeto foi desenvolvido com as seguintes tecnologias:
 
